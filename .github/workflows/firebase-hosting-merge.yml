@@ -15,7 +15,6 @@ jobs:
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_EPN_ACCESIBLE_6631F }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ACCESIBILIDAD_1D3C0 }}
           channelId: live
-          projectId: epn-accesible-6631f
-          target: principal
+          projectId: accesibilidad-1d3c0

@@ -1,12 +1,12 @@
 {
   "projects": {
-    "default": "epn-accesible-6631f"
+    "default": "accesibilidad-1d3c0"
   },
   "targets": {
-    "epn-accesible-6631f": {
+    "accesibilidad-1d3c0": {
       "hosting": {
         "principal": [
-          "epn-accesible-uio"
+          "epn"
         ]
       }
     }
