@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "epn-accesible-6631f"
+  },
+  "targets": {
+    "epn-accesible-6631f": {
+      "hosting": {
+        "principal": [
+          "epn-accesible-uio"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <title>EPN Accesible</title>
+    <meta name="description" content="Plataforma de gestión de espacios preferenciales accesibles de la EPN." />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    </noscript>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+
+    <script>
+      (() => {
+        let loaded = false;
+        const loadChatbot = () => {
+          if (loaded) return;
+          loaded = true;
+          const s = document.createElement('script');
+          s.type = 'module';
+          s.src = 'https://interfaces.zapier.com/assets/web-components/zapier-interfaces/zapier-interfaces.esm.js';
+          document.body.appendChild(s);
+        };
+
+        ['pointerdown', 'keydown', 'touchstart'].forEach((eventName) =>
+          window.addEventListener(eventName, loadChatbot, { once: true, passive: true })
+        );
+        window.addEventListener('load', () => window.setTimeout(loadChatbot, 10000), { once: true });
+      })();
+    </script>
+    <zapier-interfaces-chatbot-embed is-popup='true' chatbot-id='cmrvm8zuy001912nes3c9yzkb'></zapier-interfaces-chatbot-embed>
+  </body>
+</html>

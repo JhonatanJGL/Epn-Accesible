@@ -1,0 +1,54 @@
+.page-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.page-content > .section {
+    height: auto;
+}
+
+.login-page {
+    align-items: center;
+    justify-content: center;
+}
+
+.login-section {
+    align-items: center;
+    background: transparent;
+    box-shadow: none;
+    padding-block: clamp(1rem, 3vw, 3rem);
+}
+
+.auth-page-card {
+    background-color: var(--bg-white);
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+    max-width: 500px;
+    padding: clamp(2rem, 4vw, 2.8rem);
+    width: 100%;
+}
+
+.route-loading {
+    align-items: center;
+    color: var(--epn-blue);
+    gap: 12px;
+    justify-content: center;
+    min-height: 220px;
+    text-align: center;
+}
+
+.route-loading i {
+    font-size: 1.8rem;
+}
+
+.route-loading p {
+    color: var(--text-light);
+    font-weight: 600;
+    margin: 0;
+}
+
+@media (min-width: 1024px) {
+    .main-content.page-content {
+        display: flex;
+    }
+}

@@ -1,0 +1,233 @@
+/* ==========================================
+   1. CONTENEDOR SECCIÓN GALERÍA (ALINEADO)
+   ========================================== */
+.gallery-section {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto 2rem auto;
+  padding: 2rem;
+  background-color: #172031;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  box-sizing: border-box;
+  overflow: hidden; /* Evita que el slider rompa los bordes redondeados */
+}
+
+/* Encabezado */
+.gallery__title {
+  color: #3b82f6;
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 0 0 0.5rem 0;
+}
+
+.gallery__description {
+  color: #94a3b8;
+  font-size: 0.95rem;
+  text-align: center;
+  margin: 0 0 1.5rem 0;
+}
+
+/* ==========================================
+   2. CARRUSEL (SWIPER)
+   ========================================== */
+.gallery__swiper {
+  width: 100%;
+  padding-bottom: 2.5rem !important;
+}
+
+.gallery-card {
+  border: 0;
+  border-radius: 12px;
+  display: block;
+  font: inherit;
+  overflow: hidden;
+  height: 220px;
+  padding: 0;
+  position: relative;
+  cursor: pointer;
+  background-color: #0f172a;
+  width: 100%;
+}
+
+.gallery-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.gallery-card:hover .gallery-img {
+  transform: scale(1.03);
+}
+
+.gallery-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.gallery-overlay span {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  background: rgba(59, 130, 246, 0.85);
+  border-radius: 20px;
+}
+
+.gallery-card:hover .gallery-overlay {
+  opacity: 1;
+}
+
+:root[data-theme="light"] .gallery-section {
+  background-color: var(--bg-white);
+  border-color: var(--border-gray);
+  box-shadow: var(--shadow-sm);
+}
+
+:root[data-theme="light"] .gallery__title {
+  color: var(--epn-blue);
+}
+
+:root[data-theme="light"] .gallery__description {
+  color: var(--text-light);
+}
+
+:root[data-theme="light"] .gallery-card,
+:root[data-theme="light"] .gallery-modal__img {
+  background-color: var(--surface-muted);
+}
+
+:root[data-theme="light"] .gallery-overlay {
+  background: rgba(0, 45, 93, 0.52);
+}
+
+:root[data-theme="light"] .gallery-modal__content,
+:root[data-theme="light"] .gallery-modal__info {
+  background-color: var(--bg-white);
+  border-color: var(--border-gray);
+}
+
+:root[data-theme="light"] .gallery-modal__info h4 {
+  color: var(--text-main);
+}
+
+:root[data-theme="light"] .gallery-modal__info p {
+  color: var(--text-light);
+}
+
+/* ==========================================
+   3. VENTANA MODAL (TOTALMENTE RESPONSIVE)
+   ========================================== */
+.gallery-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  padding: 1rem; /* Margen de seguridad para pantallas pequeñas */
+}
+
+.gallery-modal__content {
+  position: relative;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 16px;
+  max-width: 480px;
+  width: 100%;
+  max-height: 85vh; /* Garantiza que toda la ventana quepa dentro del cel */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.gallery-modal__close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(15, 23, 42, 0.8);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 1.2rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.gallery-modal__close:hover {
+  background: rgba(220, 38, 38, 0.9);
+  transform: scale(1.05);
+}
+
+/* Ajuste inteligente de la imagen del modal */
+.gallery-modal__img {
+  width: 100%;
+  height: 220px; /* Alto fijo base */
+  max-height: 40vh; /* Nunca supera el 40% del alto del celular */
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  background-color: #0f172a;
+  flex-shrink: 0; /* Impide que la imagen aplaste la caja */
+}
+
+.gallery-modal__info {
+  padding: 1.25rem;
+  background-color: #1e293b;
+  overflow-y: auto; /* Permite scroll del texto si la pantalla es muy pequeña */
+}
+
+.gallery-modal__info h4 {
+  margin: 0 0 0.4rem 0;
+  font-size: 1.15rem;
+  color: #f8fafc;
+  font-weight: 700;
+}
+
+.gallery-modal__info p {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.gallery-card:focus-visible {
+  outline: 3px solid var(--blue-reserved);
+  outline-offset: 3px;
+}
+
+@media (hover: none) {
+  .gallery-overlay {
+    opacity: 1;
+  }
+}
+
+/* Ajuste dinámico para pantallas/móviles con poco alto */
+@media (max-height: 680px) {
+  .gallery-modal__img {
+    height: 170px;
+  }
+  .gallery-modal__info {
+    padding: 1rem;
+  }
+}

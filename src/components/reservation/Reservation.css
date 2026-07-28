@@ -1,0 +1,196 @@
+.reservation-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  width: 100%;
+}
+
+.form-item {
+  align-items: center;
+  background-color: var(--bg-white);
+  border: 1px solid var(--border-gray);
+  border-radius: 10px;
+  display: flex;
+  min-width: 0;
+  gap: 14px;
+  padding: 14px 18px;
+}
+
+.form-item .label {
+  color: var(--text-light);
+  flex-shrink: 0;
+  font-weight: 500;
+  width: 110px;
+}
+
+.form-item .value {
+  background: transparent;
+  border: 0;
+  color: var(--text-main);
+  flex: 1;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 600;
+  min-width: 0;
+  width: 0;
+}
+
+.form-item .value:focus {
+  outline: 2px solid #93c5fd;
+  border-radius: 4px;
+}
+
+.icon-left {
+  color: var(--epn-blue);
+  flex-shrink: 0;
+  font-size: 1.25rem;
+  text-align: center;
+  width: 24px;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.btn-reservar {
+  align-self: center;
+  background-color: var(--epn-blue);
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px -1px rgba(0, 45, 93, 0.2);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  font-size: 1rem;
+  font-weight: 700;
+  column-gap: 20px;
+  justify-content: center;
+  padding: 20px;
+  width: 100%;
+}
+
+.btn-reservar:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.reservation-message {
+  font-weight: 600;
+  margin: 0;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.reservation-message.success {
+  color: var(--green-available);
+}
+
+.reservation-message.error {
+  color: var(--red-occupied);
+}
+
+.my-reservations {
+  border-top: 1px solid var(--border-gray);
+  margin-top: 28px;
+  padding-top: 20px;
+}
+
+.my-reservations h3 {
+  color: var(--epn-blue);
+  margin: 0 0 12px;
+}
+
+.empty-reservations {
+  color: var(--text-light);
+}
+
+.reservation-record {
+  align-items: center;
+  border: 1px solid var(--border-gray);
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+  padding: 14px;
+}
+
+.reservation-record div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.reservation-record strong,
+.reservation-record span {
+  overflow-wrap: anywhere;
+}
+
+.reservation-record span,
+.reservation-record small {
+  color: var(--text-light);
+}
+
+.reservation-record button {
+  background: white;
+  border: 1px solid var(--red-occupied);
+  border-radius: 6px;
+  color: var(--red-occupied);
+  cursor: pointer;
+  font-weight: 600;
+  padding: 8px 12px;
+}
+
+.status-active {
+  color: var(--green-available);
+}
+
+.status-cancelled {
+  color: var(--red-occupied);
+}
+
+@media (min-width: 680px) {
+  .form-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .form-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+}
+
+@media (max-width: 480px) {
+  .form-item {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .form-item .label {
+    width: auto;
+  }
+
+  .form-item .value {
+    flex-basis: 100%;
+    width: 100%;
+  }
+
+  .reservation-record {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .reservation-record button {
+    align-self: flex-start;
+  }
+}
