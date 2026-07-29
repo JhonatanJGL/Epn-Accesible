@@ -121,14 +121,32 @@ const Header = () => {
             <span>{theme === "light" ? "Dark Mode" : "Light Mode"}</span>
           </button>
 
-          {user && (
-            <div className="header-user-info header-nav-user" title={user.email}>
-              <i className="fa-regular fa-user"></i>
-              <span className="header-user-name">
-                {perfil?.nombre || user.email}
-              </span>
-            </div>
-          )}
+         {user && (
+  <NavLink
+    to="/perfil"
+    className={({ isActive }) =>
+      `header-nav-link header-nav-user${
+        isActive ? " header-nav-link--active" : ""
+      }`
+    }
+    onClick={cerrarMenu}
+    title="Abrir mi perfil"
+  >
+   {perfil?.fotoPerfil ? (
+  <img
+    src={perfil.fotoPerfil}
+    alt={`Foto de perfil de ${perfil?.nombre || "usuario"}`}
+    className="header-profile-image"
+  />
+) : (
+  <i className="fa-regular fa-user"></i>
+)}
+
+    <span className="header-user-name">
+      {perfil?.nombre || user.email}
+    </span>
+  </NavLink>
+)}
 
           {user ? (
             <button

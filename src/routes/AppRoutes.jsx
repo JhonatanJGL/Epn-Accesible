@@ -12,6 +12,8 @@ const TypesPage = lazy(() => import("../pages/TypesPage"));
 const StatusPage = lazy(() => import("../pages/StatusPage"));
 const ReservationsPage = lazy(() => import("../pages/ReservationsPage"));
 const LoginPage = lazy(() => import("../pages/LoginPage"));
+const ProfilePage = lazy(() => import("../pages/ProfilePage"));
+
 
 const AppRoutes = () => {
   return (
@@ -31,6 +33,14 @@ const AppRoutes = () => {
               </ProtectedRoute>
             }
           />
+          <Route
+  path="/perfil"
+  element={
+    <ProtectedRoute>
+      <ProfilePage />
+    </ProtectedRoute>
+  }
+/>
           <Route path="/login" element={<LoginPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
