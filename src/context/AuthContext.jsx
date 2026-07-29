@@ -17,41 +17,64 @@ export const AuthProvider = ({ children }) => {
   const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
-    let activo = true;
-    let unsubscribe;
+  let activo = true;
+  let unsubscribeAuth;
+  let unsubscribePerfil;
 
-    cargarServiciosFirebase().then(({ onAuthStateChanged, auth, db, doc, getDoc }) => {
+  cargarServiciosFirebase()
+    .then(({ onAuthStateChanged, onSnapshot, auth, db, doc }) => {
       if (!activo) return;
 
-      unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      unsubscribeAuth = onAuthStateChanged(auth, (firebaseUser) => {
         if (!activo) return;
-      setUser(firebaseUser);
 
-      if (firebaseUser) {
-        try {
-          const snap = await getDoc(doc(db, "usuarios", firebaseUser.uid));
-          setPerfil(snap.exists() ? snap.data() : null);
-        } catch (error) {
-          console.error("Error al cargar el perfil:", error);
+        setUser(firebaseUser);
+
+        unsubscribePerfil?.();
+        unsubscribePerfil = undefined;
+
+        if (firebaseUser) {
+          const referenciaPerfil = doc(
+            db,
+            "usuarios",
+            firebaseUser.uid
+          );
+
+          unsubscribePerfil = onSnapshot(
+            referenciaPerfil,
+            (snap) => {
+              if (!activo) return;
+
+              setPerfil(snap.exists() ? snap.data() : null);
+              setCargando(false);
+            },
+            (error) => {
+              if (!activo) return;
+
+              console.error("Error al escuchar el perfil:", error);
+              setPerfil(null);
+              setCargando(false);
+            }
+          );
+        } else {
           setPerfil(null);
+          setCargando(false);
         }
-      } else {
-        setPerfil(null);
-      }
-
-      setCargando(false);
       });
-    }).catch((error) => {
+    })
+    .catch((error) => {
       if (!activo) return;
+
       console.error("Error al iniciar la autenticación:", error);
       setCargando(false);
     });
 
-    return () => {
-      activo = false;
-      unsubscribe?.();
-    };
-  }, []);
+  return () => {
+    activo = false;
+    unsubscribeAuth?.();
+    unsubscribePerfil?.();
+  };
+}, []);
 
   const correoExiste = async (correo) => {
     const { fetchSignInMethodsForEmail, auth } = await cargarServiciosFirebase();

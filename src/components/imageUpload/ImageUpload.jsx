@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { doc, setDoc } from "firebase/firestore";
-
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase/firebaseConfig";
 import { supabase } from "../../supabase/supabaseClient";
 
@@ -48,73 +47,95 @@ const ImageUpload = () => {
     setArchivo(imagenSeleccionada);
     setVistaPrevia(URL.createObjectURL(imagenSeleccionada));
   };
-
   const subirImagen = async () => {
-    const usuario = auth.currentUser;
+  const usuario = auth.currentUser;
 
-    if (!usuario) {
-      setMensaje("Debes iniciar sesión para subir una foto de perfil.");
-      return;
+  if (!usuario) {
+    setMensaje("Debes iniciar sesión para subir una foto de perfil.");
+    return;
+  }
+
+  if (!archivo) {
+    setMensaje("Selecciona una imagen antes de subirla.");
+    return;
+  }
+
+  try {
+    setSubiendo(true);
+    setMensaje("");
+
+    // Consultar la ruta de la fotografía anterior
+    const referenciaUsuario = doc(db, "usuarios", usuario.uid);
+    const documentoUsuario = await getDoc(referenciaUsuario);
+
+    const rutaAnterior = documentoUsuario.exists()
+      ? documentoUsuario.data().fotoPerfilRuta
+      : null;
+
+    const extension =
+      archivo.name.split(".").pop()?.toLowerCase() || "jpg";
+
+    const nombreUnico = `${crypto.randomUUID()}.${extension}`;
+    const rutaArchivo = `perfiles/${usuario.uid}/${nombreUnico}`;
+
+    // Subir la nueva fotografía
+    const { error: errorSubida } = await supabase.storage
+      .from("imagenes-epn")
+      .upload(rutaArchivo, archivo, {
+        cacheControl: "3600",
+        upsert: false,
+        contentType: archivo.type,
+      });
+
+    if (errorSubida) {
+      throw errorSubida;
     }
 
-    if (!archivo) {
-      setMensaje("Selecciona una imagen antes de subirla.");
-      return;
-    }
+    const { data } = supabase.storage
+      .from("imagenes-epn")
+      .getPublicUrl(rutaArchivo);
 
-    try {
-      setSubiendo(true);
-      setMensaje("");
+    const urlPublica = data.publicUrl;
 
-      const extension =
-        archivo.name.split(".").pop()?.toLowerCase() || "jpg";
-
-      const nombreUnico = `${crypto.randomUUID()}.${extension}`;
-
-      const rutaArchivo =
-        `perfiles/${usuario.uid}/${nombreUnico}`;
-
-      const { error: errorSubida } = await supabase.storage
-        .from("imagenes-epn")
-        .upload(rutaArchivo, archivo, {
-          cacheControl: "3600",
-          upsert: false,
-          contentType: archivo.type,
-        });
-
-      if (errorSubida) {
-        throw errorSubida;
+    // Guardar la URL y la ruta nueva en Firestore
+    await setDoc(
+      referenciaUsuario,
+      {
+        fotoPerfil: urlPublica,
+        fotoPerfilRuta: rutaArchivo,
+      },
+      {
+        merge: true,
       }
+    );
 
-      const { data } = supabase.storage
+    // Eliminar la fotografía anterior
+    if (rutaAnterior && rutaAnterior !== rutaArchivo) {
+      const { error: errorEliminacion } = await supabase.storage
         .from("imagenes-epn")
-        .getPublicUrl(rutaArchivo);
+        .remove([rutaAnterior]);
 
-      const urlPublica = data.publicUrl;
-
-      await setDoc(
-        doc(db, "usuarios", usuario.uid),
-        {
-          fotoPerfil: urlPublica,
-        },
-        {
-          merge: true,
-        }
-      );
-
-      setUrlImagen(urlPublica);
-      setMensaje("Foto de perfil actualizada correctamente.");
-    } catch (error) {
-      console.error("Error al subir la foto de perfil:", error);
-
-      setMensaje(
-        `No se pudo subir la imagen: ${error.message}`
-      );
-    } finally {
-      setSubiendo(false);
+      if (errorEliminacion) {
+        console.warn(
+          "La nueva foto se guardó, pero no se eliminó la anterior:",
+          errorEliminacion
+        );
+      }
     }
-  };
 
+    setUrlImagen(urlPublica);
+    setArchivo(null);
+    setVistaPrevia("");
+    setMensaje("Foto de perfil actualizada correctamente.");
+  } catch (error) {
+    console.error("Error al subir la foto de perfil:", error);
+
+    setMensaje(`No se pudo subir la imagen: ${error.message}`);
+  } finally {
+    setSubiendo(false);
+  }
+};
+ 
   return (
     <section className="profile-image-upload">
       <h2>Foto de perfil</h2>
