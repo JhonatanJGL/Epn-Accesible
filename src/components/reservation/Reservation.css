@@ -194,3 +194,51 @@
     align-self: flex-start;
   }
 }
+.reservation-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-pdf,
+.btn-cancelar {
+  border: none;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.btn-pdf {
+  background: #0067b1;
+  color: #ffffff;
+}
+
+.btn-cancelar {
+  background: #b42318;
+  color: #ffffff;
+}
+
+.btn-pdf:hover,
+.btn-cancelar:hover {
+  transform: translateY(-1px);
+  opacity: 0.9;
+}
+
+@media (max-width: 600px) {
+  .reservation-actions {
+    width: 100%;
+  }
+
+  .btn-pdf,
+  .btn-cancelar {
+    flex: 1;
+  }
+}

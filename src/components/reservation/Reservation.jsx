@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import ReservaPDF from "./ReservaPDF";
+
 import {
   addDoc,
   collection,
@@ -458,14 +461,36 @@ const Reservation = () => {
                 </span>
               </div>
 
-              <button
-                type="button"
-                onClick={() =>
-                  cancelarReserva(reserva.id)
-                }
-              >
-                Cancelar
-              </button>
+                        <div className="reservation-actions">
+            <PDFDownloadLink
+              document={
+                <ReservaPDF
+                  reserva={{
+                    ...reserva,
+                    usuarioCorreo: user?.email,
+                  }}
+                />
+              }
+              fileName={`comprobante-${reserva.id}.pdf`}
+              className="btn-pdf"
+            >
+              {({ loading }) =>
+                loading
+                  ? "Generando PDF..."
+                  : "Descargar PDF"
+              }
+            </PDFDownloadLink>
+
+            <button
+              type="button"
+              className="btn-cancelar"
+              onClick={() =>
+                cancelarReserva(reserva.id)
+              }
+            >
+              Cancelar
+            </button>
+          </div>
             </article>
           ))
         )}
